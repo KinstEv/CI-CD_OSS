@@ -1,0 +1,25 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches:
+      - main   # chạy khi có push lên nhánh main
+
+jobs:
+  ftp-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_Server }}
+          username: ${{ secrets.FTP_Username }}
+          password: ${{ secrets.FTP_Password }}
+          server-dir: /htdocs/   # thư mục gốc trên InfinityFree
+          exclude: |
+            **/.git*
+            **/.github*
